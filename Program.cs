@@ -1,7 +1,13 @@
-﻿internal class Program
+﻿namespace SutorAes
 {
-    private static void Main(string[] args)
+
+  class Program
+  {
+    static void Main(string[] args)
     {
-        Console.WriteLine("Hello, World!");
+      Console.WriteLine("Hello World!");
     }
+  }
+
 }
+
