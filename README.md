@@ -9,7 +9,6 @@
 
 https://moodle.ssps.cz/mod/book/view.php?id=6246&chapterid=789
 
-## Rozdělení práce 
 
 ## Rozdělení práce
 
