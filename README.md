@@ -8,3 +8,24 @@
 ## Zadání
 
 https://moodle.ssps.cz/mod/book/view.php?id=6246&chapterid=789
+
+## Rozdělení práce 
+
+## Rozdělení práce
+
+Client:
+- Giacommo
+- Šimel
+
+Databáze:
+- Ondra
+- Štěpán
+- Michal
+
+Testy:
+- Fanda
+- Adam
+
+Logo:
+- Petr
+
