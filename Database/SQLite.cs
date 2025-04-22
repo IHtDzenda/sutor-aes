@@ -1,4 +1,8 @@
 using Microsoft.EntityFrameworkCore;
+<<<<<<< HEAD
+=======
+using Microsoft.EntityFrameworkCore.ChangeTracking.Internal;
+>>>>>>> 6cb4ff4 (feat: Implement database structure and database models. Also added database function specified on board)
 
 public class Database : DbContext
 {
