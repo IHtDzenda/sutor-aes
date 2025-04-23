@@ -5,7 +5,7 @@ using System;
 namespace SutorAes
 {
 
-    class Program
+    public class Program
     {
         static void Main(string[] args)
         {
@@ -53,7 +53,7 @@ namespace SutorAes
 
         public static byte[] EncryptString(string plainText, byte[] key, byte[] iv)
         {
-            if (plainText == null || plainText.Length <= 0)
+            if (plainText == null)
             {
                 throw new ArgumentNullException(nameof(plainText));
             }
