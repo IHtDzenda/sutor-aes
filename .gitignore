@@ -55,3 +55,6 @@ Desktop.ini
 *.opendb
 *.scc
 
+
+Database.db
+Migrations/
