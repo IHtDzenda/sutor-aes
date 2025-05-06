@@ -15,11 +15,12 @@ public class Database : DbContext
         optionsBuilder.UseSqlite($"Data Source={_dbPath}");
     }
 
-    public void RegisterUser(Guid userId, byte[]? rsaPublicKey)
+    public void RegisterUser(Guid userId, string username, byte[]? rsaPublicKey)
     {
         var user = new DBUser
         {
             UserID = userId,
+            Name = username,
             RsaPublicKey = rsaPublicKey
         };
         Users.Add(user);

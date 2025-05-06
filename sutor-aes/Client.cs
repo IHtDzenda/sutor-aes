@@ -6,11 +6,13 @@ namespace SutorAes
 {
   class Client
   {
-    Guid id { get; set; }
+    Guid Id { get; set; }
+    string  Name { get; set; }
+
     byte[] RsaPub { get; set; }
     byte[] RsaPriv { get; set; }
     Dictionary<Guid, byte[]> KnownHosts { get; set; } = new();
-    private event Action<string>? handler;
+    private event Action<string>? Handler;
 
     RSAEncryptionPadding padding = RSAEncryptionPadding.Pkcs1;
 
@@ -82,19 +84,19 @@ namespace SutorAes
 
     public void OnMessage(Action<string> handler)
     {
-      this.handler += handler;
+      this.Handler += handler;
     }
     public void RecieveMessage(byte[] msg, byte[] IV)
     {
-      var decryptedMessage = DecryptMessage(id, msg, IV);
+      var decryptedMessage = DecryptMessage(Id, msg, IV);
       var message = Encoding.UTF8.GetString(decryptedMessage);
-      handler?.Invoke(message);
+      Handler?.Invoke(message);
     }
     public void SendMessage(Client reciever, string msg)
     {
       var IV = new byte[16];
       RandomNumberGenerator.Fill(IV);
-      var encryptedMessage = EncryptMessage(id, Encoding.UTF8.GetBytes(msg), IV);
+      var encryptedMessage = EncryptMessage(Id, Encoding.UTF8.GetBytes(msg), IV);
       reciever.RecieveMessage(encryptedMessage, IV);
     }
 
@@ -103,8 +105,8 @@ namespace SutorAes
       byte[] key = new byte[16];
 
       System.Security.Cryptography.RandomNumberGenerator.Fill(key);
-      other.RecieveConnection(this.id, key);
-      this.KnownHosts.Add(other.id, key);
+      other.RecieveConnection(this.Id, key);
+      this.KnownHosts.Add(other.Id, key);
     }
     public void RecieveConnection(Guid id, byte[] key)
     {
