@@ -111,42 +111,22 @@ namespace SutorAes
       this.KnownHosts.Add(id, key);
     }
 
-    // public byte[] EncryptRSA(byte[] data)
-    // {
-    //     using (RSA rsa = RSA.Create())
-    //     {
-    //         rsa.ImportRSAPublicKey(RsaPub, out _);
-    //         return rsa.Encrypt(data, padding);
-    //     }
-    // }
-    // 
-    // public byte[] DecryptRSA(byte[] encryptedData)
-    // {
-    //     using (RSA rsa = RSA.Create())
-    //     {
-    //         rsa.ImportRSAPrivateKey(RsaPriv, out _);
-    //         return rsa.Decrypt(encryptedData, padding);
-    //     }
-    // }
-  }
-
-  class Database
-  {
-    private Dictionary<Guid, byte[]> User2Pubkey { get; set; }
-
-    public Database()
+    public byte[] EncryptRSA(byte[] data)
     {
-      User2Pubkey = new Dictionary<Guid, byte[]>();
+        using (RSA rsa = RSA.Create())
+        {
+            rsa.ImportRSAPublicKey(RsaPub, out _);
+            return rsa.Encrypt(data, padding);
+        }
     }
-
-    public void RegisterUser(Guid id, byte[] rsaPub)
+    
+    public byte[] DecryptRSA(byte[] encryptedData)
     {
-      User2Pubkey.Add(id, rsaPub);
-    }
-
-    public Dictionary<Guid, byte[]> ListUsers()
-    {
-      return User2Pubkey;
+        using (RSA rsa = RSA.Create())
+        {
+            rsa.ImportRSAPrivateKey(RsaPriv, out _);
+            return rsa.Decrypt(encryptedData, padding);
+        }
     }
   }
 }
