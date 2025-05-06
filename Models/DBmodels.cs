@@ -4,6 +4,8 @@ using System.ComponentModel.DataAnnotations.Schema;
 public class DBUser{
     [Key]
     public Guid UserID { get; set; }
+    [Index(IsUnique=true)]
+    string Name { get; set; }
     public byte[]? RsaPublicKey { get; set; }
 }
 
