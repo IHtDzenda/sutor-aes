@@ -107,7 +107,7 @@ namespace SutorAes
 
             System.Security.Cryptography.RandomNumberGenerator.Fill(key);
             byte[] encryptedKey = this.EncryptRSA(key, other.RsaPub);
-            other.RecieveConnection(this.Id, key);
+            other.RecieveConnection(this.Id, encryptedKey);
             this.KnownHosts.Add(other.Id, key);
         }
         public void RecieveConnection(Guid id, byte[] encryptedKey)
