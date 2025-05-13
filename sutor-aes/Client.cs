@@ -9,7 +9,7 @@ namespace SutorAes
     Guid Id { get; set; }
     string  Name { get; set; }
 
-    byte[] RsaPub { get; set; }
+    public byte[] RsaPub { get; set; }
     byte[] RsaPriv { get; set; }
     Dictionary<Guid, byte[]> KnownHosts { get; set; } = new();
     private event Action<string>? Handler;
@@ -105,31 +105,33 @@ namespace SutorAes
       byte[] key = new byte[16];
 
       System.Security.Cryptography.RandomNumberGenerator.Fill(key);
+      byte[] encryptedKey = this.EncryptRSA(key, other.RsaPub);
       other.RecieveConnection(this.Id, key);
       this.KnownHosts.Add(other.Id, key);
     }
-    public void RecieveConnection(Guid id, byte[] key)
+    public void RecieveConnection(Guid id, byte[] encryptedKey)
     {
+      byte[] key = this.DecryptRSA(encryptedKey);
       this.KnownHosts.Add(id, key);
     }
 
-    // public byte[] EncryptRSA(byte[] data)
-    // {
-    //     using (RSA rsa = RSA.Create())
-    //     {
-    //         rsa.ImportRSAPublicKey(RsaPub, out _);
-    //         return rsa.Encrypt(data, padding);
-    //     }
-    // }
-    // 
-    // public byte[] DecryptRSA(byte[] encryptedData)
-    // {
-    //     using (RSA rsa = RSA.Create())
-    //     {
-    //         rsa.ImportRSAPrivateKey(RsaPriv, out _);
-    //         return rsa.Decrypt(encryptedData, padding);
-    //     }
-    // }
+    public byte[] EncryptRSA(byte[] data, byte[] pubKey)
+    {
+        using (RSA rsa = RSA.Create())
+        {
+            rsa.ImportRSAPublicKey(pubKey, out _);
+            return rsa.Encrypt(data, padding);
+        }
+    }
+    
+    public byte[] DecryptRSA(byte[] encryptedData)
+    {
+        using (RSA rsa = RSA.Create())
+        {
+            rsa.ImportRSAPrivateKey(RsaPriv, out _);
+            return rsa.Decrypt(encryptedData, padding);
+        }
+    }
   }
 
   class Database
