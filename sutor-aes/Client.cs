@@ -16,8 +16,9 @@ namespace SutorAes
 
         RSAEncryptionPadding padding = RSAEncryptionPadding.Pkcs1;
 
-        public Client()
+        public Client(string _name)
         {
+            this.Name = _name;
             GenerateRSAKeys();
         }
 
