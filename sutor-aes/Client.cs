@@ -7,7 +7,7 @@ namespace SutorAes
     class Client
     {
         Guid Id { get; set; }
-        string Name { get; set; }
+        public string Name { get; set; }
 
         public byte[] RsaPub { get; set; }
         byte[] RsaPriv { get; set; }
