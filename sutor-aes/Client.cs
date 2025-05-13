@@ -7,17 +7,18 @@ namespace SutorAes
     class Client
     {
         Guid Id { get; set; }
-        string Name { get; set; }
+        public string Name { get; set; }
 
-        byte[] RsaPub { get; set; }
+        public byte[] RsaPub { get; set; }
         byte[] RsaPriv { get; set; }
         Dictionary<Guid, byte[]> KnownHosts { get; set; } = new();
         private event Action<string>? Handler;
 
         RSAEncryptionPadding padding = RSAEncryptionPadding.Pkcs1;
 
-        public Client()
+        public Client(string _name)
         {
+            this.Name = _name;
             GenerateRSAKeys();
         }
 
@@ -105,19 +106,21 @@ namespace SutorAes
             byte[] key = new byte[16];
 
             System.Security.Cryptography.RandomNumberGenerator.Fill(key);
-            other.RecieveConnection(this.Id, key);
+            byte[] encryptedKey = this.EncryptRSA(key, other.RsaPub);
+            other.RecieveConnection(this.Id, encryptedKey);
             this.KnownHosts.Add(other.Id, key);
         }
-        public void RecieveConnection(Guid id, byte[] key)
+        public void RecieveConnection(Guid id, byte[] encryptedKey)
         {
+            byte[] key = this.DecryptRSA(encryptedKey);
             this.KnownHosts.Add(id, key);
         }
 
-        public byte[] EncryptRSA(byte[] data)
+        public byte[] EncryptRSA(byte[] data, byte[] pubKey)
         {
             using (RSA rsa = RSA.Create())
             {
-                rsa.ImportRSAPublicKey(RsaPub, out _);
+                rsa.ImportRSAPublicKey(pubKey, out _);
                 return rsa.Encrypt(data, padding);
             }
         }
@@ -129,26 +132,6 @@ namespace SutorAes
                 rsa.ImportRSAPrivateKey(RsaPriv, out _);
                 return rsa.Decrypt(encryptedData, padding);
             }
-        }
-    }
-
-    class Database
-    {
-        private Dictionary<Guid, byte[]> User2Pubkey { get; set; }
-
-        public Database()
-        {
-            User2Pubkey = new Dictionary<Guid, byte[]>();
-        }
-
-        public void RegisterUser(Guid id, byte[] rsaPub)
-        {
-            User2Pubkey.Add(id, rsaPub);
-        }
-
-        public Dictionary<Guid, byte[]> ListUsers()
-        {
-            return User2Pubkey;
         }
     }
 }
