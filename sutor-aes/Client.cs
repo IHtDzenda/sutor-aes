@@ -4,7 +4,7 @@ using System;
 
 namespace SutorAes
 {
-    class Client
+    public class Client
     {
         Guid Id { get; set; }
         public string Name { get; set; }
